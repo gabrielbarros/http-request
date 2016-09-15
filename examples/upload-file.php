@@ -1,17 +1,19 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$param = array(
+$http->setBody(array(
     'name' => 'Mario',
     'age' => '30'
-);
+));
 
 $http->uploadFile('photo1', realpath('image1.png'), 'image/png');
 $http->uploadFile('photo2', realpath('image2.png'), 'image/png');
 
-$http->post('https://httpbin.org/post', $param);
+$http->post('https://httpbin.org/post');
 
-header('content-type: text/plain');
+header('Content-Type: text/plain');
 echo $http->responseText;

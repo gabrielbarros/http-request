@@ -1,15 +1,17 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$param = array(
+$http->setQuery(array(
     'value_1' => 'Something, anything',
     'test' => 'another text',
     'utf8' => 'áéíóúàèìòùâãôõçäëïöüÿý'
-);
+));
 
-$http->get('https://httpbin.org/get', $param);
+$http->get('https://httpbin.org/get');
 
-header('content-type: text/plain');
+header('Content-Type: text/plain');
 echo $http->responseText;

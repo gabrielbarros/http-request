@@ -1,13 +1,20 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$param = array(
-    'value' => '1',
-);
+$http->setQuery(array(
+    'id' => '88900'
+));
 
-$http->request('PATCH', 'https://httpbin.org/patch', $param);
+$http->setBody(array(
+    'name' => 'Paul',
+    'age' => '20'
+));
 
-header('content-type: text/plain');
+$http->patch('https://httpbin.org/patch');
+
+header('Content-Type: text/plain');
 echo $http->responseText;

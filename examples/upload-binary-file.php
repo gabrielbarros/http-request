@@ -1,12 +1,16 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
 $binary = file_get_contents('image1.png');
 
-$http->postContentType = 'image/png';
-$http->post('https://httpbin.org/post', $binary);
+$http->setBody($binary);
 
-header('content-type: text/plain');
+$http->contentType = 'image/png';
+$http->post('https://httpbin.org/post');
+
+header('Content-Type: text/plain');
 echo $http->responseText;

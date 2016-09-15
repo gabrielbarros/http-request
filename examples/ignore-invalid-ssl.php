@@ -1,5 +1,7 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
@@ -9,7 +11,7 @@ $http->setOptions(array(
 
 $http->get('https://expired.badssl.com');
 
-header('content-type: text/plain');
+header('Content-Type: text/plain');
 
 if ($http->error) {
     echo $http->errorMsg;

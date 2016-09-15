@@ -1,20 +1,22 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$param_post = array(
+$http->setQuery(array(
+    'zum' => 'zim',
+    'lala' => 'lo lo'
+));
+
+$http->setBody(array(
     'value_1' => 'Something, anything',
     'test' => 'another text',
     'utf8' => 'áéíóúàèìòùâãôõçäëïöüÿý'
-);
+));
 
-$param_get = array(
-    'zum' => 'zim',
-    'lala' => 'lo lo'
-);
+$http->post('https://httpbin.org/post');
 
-$http->post('https://httpbin.org/post', $param_post, $param_get);
-
-header('content-type: text/plain');
+header('Content-Type: text/plain');
 echo $http->responseText;

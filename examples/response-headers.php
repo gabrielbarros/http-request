@@ -1,9 +1,11 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
 $http->get('https://httpbin.org/get');
 
-header('content-type: text/plain');
+header('Content-Type: text/plain');
 print_r($http->responseHeaders);

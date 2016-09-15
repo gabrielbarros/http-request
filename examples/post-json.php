@@ -1,5 +1,7 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
@@ -11,8 +13,10 @@ $param = array(
 
 $json = json_encode($param);
 
-$http->postContentType = 'application/json';
-$http->post('https://httpbin.org/post', $json);
+$http->setBody($json);
 
-header('content-type: text/plain');
+$http->contentType = 'application/json';
+$http->post('https://httpbin.org/post');
+
+header('Content-Type: text/plain');
 echo $http->responseText;

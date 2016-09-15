@@ -1,5 +1,7 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
@@ -12,5 +14,5 @@ $cookies = array(
 $http->setCookies($cookies);
 $http->get('https://httpbin.org/get');
 
-header('content-type: text/plain');
+header('Content-Type: text/plain');
 echo $http->responseText;

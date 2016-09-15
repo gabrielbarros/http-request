@@ -1,12 +1,14 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
 $http->connect = 5;
 $http->get('https://google281928182812819289.com');
 
-header('content-type: text/plain');
+header('Content-Type: text/plain');
 
 if ($http->error) {
     echo 'ERROR: ' . $http->errorMsg;

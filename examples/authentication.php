@@ -1,5 +1,7 @@
 <?php
-include '../HttpRequest.class.php';
+require 'autoload.php';
+
+use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
@@ -10,5 +12,5 @@ $http->setAuthentication($user, $password);
 
 $http->get("https://httpbin.org/basic-auth/{$user}/{$password}");
 
-header('content-type: text/plain');
+header('Content-Type: text/plain');
 echo $http->responseText;
