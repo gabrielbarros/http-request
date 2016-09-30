@@ -4,11 +4,7 @@ require 'autoload.php';
 use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
-
-$http->setOptions(array(
-    CURLOPT_SSL_VERIFYPEER => false
-));
-
+$http->ignoreInvalidCert = true;
 $http->get('https://expired.badssl.com');
 
 header('Content-Type: text/plain');
