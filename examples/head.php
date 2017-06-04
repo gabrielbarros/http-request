@@ -5,9 +5,11 @@ use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-// $http->headersToObject = false;
+$http->setQuery(array(
+    'number' => '12345'
+));
 
-$http->get('https://httpbin.org/get');
+$http->head('https://httpbin.org/get');
 
 header('Content-Type: text/plain');
-print_r($http->responseHeaders);
+echo $http->responseText;
