@@ -5,9 +5,9 @@ use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$http->setQuery(array(
+$http->setQuery([
     'number' => '12345'
-));
+]);
 
 $http->head('https://httpbin.org/get');
 

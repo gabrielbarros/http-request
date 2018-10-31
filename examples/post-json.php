@@ -5,11 +5,11 @@ use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$param = array(
+$param = [
     'value_1' => 'Something, anything',
     'test' => 'another text',
     'utf8' => 'áéíóúàèìòùâãôõçäëïöüÿý'
-);
+];
 
 $json = json_encode($param);
 

@@ -5,14 +5,14 @@ use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$http->setQuery(array(
+$http->setQuery([
     'id' => '88900'
-));
+]);
 
-$http->setBody(array(
+$http->setBody([
     'name' => 'Paul',
     'age' => '20'
-));
+]);
 
 $http->patch('https://httpbin.org/patch');
 

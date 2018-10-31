@@ -5,10 +5,10 @@ use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$http->setOptions(array(
+$http->setOptions([
     CURLOPT_FAILONERROR => true,
     CURLOPT_FORBID_REUSE => true
-));
+]);
 
 $http->get('https://www.google.com/404-NOT-FOUND');
 

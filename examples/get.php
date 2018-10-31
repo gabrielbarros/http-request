@@ -5,11 +5,11 @@ use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$http->setQuery(array(
+$http->setQuery([
     'value_1' => 'Something, anything',
     'test' => 'another text',
     'utf8' => 'áéíóúàèìòùâãôõçäëïöüÿý'
-));
+]);
 
 $http->get('https://httpbin.org/get');
 

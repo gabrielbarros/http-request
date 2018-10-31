@@ -17,13 +17,13 @@ class HttpRequest {
 
     protected $url;
     protected $urlInfo;
-    protected $query = array();
+    protected $query = [];
     protected $body;
     protected $upload = false;
 
     protected $cookies;
-    protected $headers = array();
-    protected $options = array();
+    protected $headers = [];
+    protected $options = [];
     protected $username;
     protected $password;
 
@@ -35,32 +35,12 @@ class HttpRequest {
     public $status;
     public $debugInfo;
 
-
-    const UA_IE10 = 'Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.2; Trident/6.0)';
-    const UA_IE9 = 'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)';
-    const UA_IE8 = 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0; Trident/4.0)';
-    const UA_IE7 = 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)';
-    const UA_FIREFOX = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:28.0) Gecko/20100101 Firefox/28.0';
-    const UA_CHROME = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36';
-    const UA_OPERA = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.149 Safari/537.36 OPR/20.0.1387.77';
-    const UA_SAFARI = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2';
-    const UA_ANDROID = 'Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30';
-    const UA_IPHONE = 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_0_2 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A4449d Safari/9537.53';
-    const UA_IPAD = 'Mozilla/5.0 (iPad; CPU OS 7_0_2 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A501 Safari/9537.53';
-    const UA_GOOGLEBOT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
-
-
     public function setQuery($query) {
         $this->query = $query;
     }
 
     public function setBody($body) {
-        if (is_array($body)) {
-            $this->body = array_merge((array) $this->body, $body);
-        }
-        else {
-            $this->body = $body;
-        }
+        $this->body = $body;
     }
 
     public function setCookies($cookie) {
@@ -126,7 +106,7 @@ class HttpRequest {
         $this->urlInfo = parse_url($url);
 
         // cURL options
-        $options = array();
+        $options = [];
 
         // HTTP method
         if ($method === 'POST') {
@@ -165,12 +145,11 @@ class HttpRequest {
             }
 
             if (isset($this->contentType)) {
-                $this->setHeaders(array(
+                $this->setHeaders([
                     'Content-Type' => $this->contentType
-                ));
+                ]);
             }
         }
-
 
         $options[CURLOPT_URL] = $this->getFullUrl();
         $options[CURLOPT_HEADER] = true;
@@ -189,7 +168,6 @@ class HttpRequest {
         if ($this->debug) {
             $options[CURLINFO_HEADER_OUT] = true;
         }
-
 
         // Set SSL certificate to securely access the page
         if (strtolower($this->urlInfo['scheme']) === 'https') {
@@ -212,12 +190,8 @@ class HttpRequest {
 
         // Set cookie
         if (isset($this->cookies)) {
-            //$options[CURLOPT_COOKIEJAR] = 'cookie.txt';
-            //$options[CURLOPT_COOKIEFILE] = 'cookie.txt';
-            //$options[CURLOPT_COOKIESESSION] = true;
             $options[CURLOPT_COOKIE] = $this->cookies;
         }
-
 
         // Custom cURL options
         foreach ($this->options as $key => $value) {
@@ -272,11 +246,11 @@ class HttpRequest {
 
             unset($curlInfo['request_header']);
 
-            $this->debugInfo = array_merge($curlInfo, array(
+            $this->debugInfo = array_merge($curlInfo, [
                 'error_msg' => $this->errorMsg,
                 'request' => $request,
                 'response' => $output
-            ));
+            ]);
         }
 
         curl_close($curl);
@@ -285,7 +259,12 @@ class HttpRequest {
     private function getFullUrl() {
         $url = rtrim($this->url, '&?');
 
-        if (count($this->query)) {
+        if (is_string($this->query)) {
+            if (strlen($this->query)) {
+                $url .= '?' . $this->query;
+            }
+        }
+        else if (is_array($this->query) && count($this->query)) {
             $buildQuery = http_build_query($this->query);
 
             if (isset($this->urlInfo['query'])) {
@@ -331,8 +310,7 @@ class HttpRequest {
                         $objHeaders->$key[] = $value;
                     }
                     else {
-                        $objHeaders->$key = array($objHeaders->$key);
-                        $objHeaders->$key[] = $value;
+                        $objHeaders->$key = [$objHeaders->$key, $value];
                     }
                 }
                 else {
@@ -348,18 +326,9 @@ class HttpRequest {
     public function uploadFile($key, $path, $mimetype) {
 
         $filename = basename($path);
-
-        if (version_compare(PHP_VERSION, '5.5.0', '>=')) {
-            $file = new \CURLFile($path, $mimetype, $filename);
-        }
-
-        else {
-            $file = '@' . $path . ";type={$mimetype};filename={$filename}";
-        }
+        $curlFile = new \CURLFile($path, $mimetype, $filename);
 
         $this->upload = true;
-        $this->setBody(array(
-            $key => $file
-        ));
+        $this->body[$key] = $curlFile;
     }
 }

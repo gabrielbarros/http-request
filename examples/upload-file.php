@@ -5,10 +5,10 @@ use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$http->setBody(array(
+$http->setBody([
     'name' => 'Mario',
     'age' => '30'
-));
+]);
 
 $http->uploadFile('photo1', realpath('image1.png'), 'image/png');
 $http->uploadFile('photo2', realpath('image2.png'), 'image/png');

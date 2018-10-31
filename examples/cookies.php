@@ -5,11 +5,11 @@ use HttpRequest\HttpRequest;
 
 $http = new HttpRequest();
 
-$cookies = array(
+$cookies = [
     'name' => 'John Smith',
     'age' => '30',
     'role' => 'manager'
-);
+];
 
 $http->setCookies($cookies);
 $http->get('https://httpbin.org/get');

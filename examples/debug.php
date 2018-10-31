@@ -8,13 +8,13 @@ $http->debug = true;
 
 $http->userAgent = 'Hello world';
 
-$http->setCookies(array(
+$http->setCookies([
     'cookie_test' => 'The quick brown fox jumps over the lazy dog'
-));
+]);
 
-$http->setHeaders(array(
+$http->setHeaders([
     'X-Some-Header' => '123456'
-));
+]);
 
 $http->get('https://www.google.com/humans.txt');
 
